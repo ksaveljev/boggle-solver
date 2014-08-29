@@ -7,7 +7,11 @@ The game itself is pretty easy. You are given a 4x4 matrix with charaters in eac
 
 Boggle solver is a simple solution for this game. It takes a dictionary of valid words (which I took from /usr/share/dict/words on my linux box) and tries to find each of the word on the board (well, some filtering before happens as well to optimize the solution, although it is not complete, more optimization could be done). My major goal was to use State monad in this project for searching a word in the matrix. I learned quite a bit by using it here.
 
-Here are the screenshots of the solver in action:
+    cabal sandbox init
+    cabal build
+    cabal run -- kwedeeofpjstkatd
+
+Here are the screenshots of the solver in action (*screenshots were made before moving project to cabal*):
 
 ![Boggle solver at work](http://ksaveljev.github.io/boggle-solver.png)
 
