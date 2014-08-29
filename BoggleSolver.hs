@@ -13,12 +13,11 @@ module BoggleSolver (solveBoggle) where
 
 import Data.Maybe (fromJust)
 import Data.List (find)
-import Control.Monad (msum)
 import Control.Monad.Reader
 import Control.Monad.State.Strict
 import qualified Data.Set as S
 
-data Position = Position { row :: Int, column :: Int } deriving (Show, Eq, Ord)
+data Position = Position { _row :: Int, _column :: Int } deriving (Show, Eq, Ord)
 
 -- | Information about each tile of the board which contains a character at specified
 -- position and the list of valid neighbours
@@ -30,7 +29,7 @@ type Board = [Node]
 
 -- | Convert a pair of ints to our Position data type
 positionFromPair :: (Int, Int) -> Position
-positionFromPair (r, c) = Position { row = r, column = c }
+positionFromPair (row, column) = Position { _row = row, _column = column }
 
 -- | Given a Board and Position find a Node inside the Board which has the same
 -- position as requested
@@ -48,7 +47,7 @@ validPosition (Position row column) = inRange row && inRange column
 buildBoard :: String -> Board
 buildBoard input = map (\index -> buildNode (input !! index) (positionFromPair (index `divMod` 4))) [0..15]
     where
-        buildNode char position@(Position row column) = (char, position, getNeighbours position)
+        buildNode char position = (char, position, getNeighbours position)
         getNeighbours position@(Position row column) = [neighbour | x <- [-1,0,1], y <- [-1,0,1], let neighbour = Position (row + x) (column + y), validPosition neighbour, position /= neighbour]
 
 -- | Given the word we are searching for and the starting node we are searching for the word:
@@ -98,5 +97,5 @@ findWord board word =
 solveBoggle :: [String] -> String -> [String]
 solveBoggle dictionary input =
     let board = buildBoard input
-        words = filter (\word -> head word `elem` input) dictionary
-    in filter (findWord board) words
+        candidateWords = filter (\word -> head word `elem` input) dictionary
+    in filter (findWord board) candidateWords
